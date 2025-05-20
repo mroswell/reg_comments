@@ -1,0 +1,52 @@
+name: FDA Regulations Scraper
+
+on:
+  schedule:
+    # Run daily at 2:30 AM UTC
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+    # Allows manual triggering
+
+jobs:
+  scrape_regulations:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install requests tqdm; fi
+          
+      - name: Run FDA regulations scraper
+        run: |
+          python regulations_fda_scraping.py
+          
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+      - name: Commit and push results
+        run: |
+          # Find the latest results file
+          RESULTS_FILE=$(ls -t regulations_fda_scraping_result_*.csv | head -1)
+          if [ -z "$RESULTS_FILE" ]; then
+            echo "No results file found"
+            exit 1
+          fi
+          
+          # Add, commit and push
+          git add "$RESULTS_FILE"
+          git commit -m "Add scraping results: $RESULTS_FILE" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
