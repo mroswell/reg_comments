@@ -1,0 +1,5 @@
+
+# Requirements for regulations_fda_scraping.py
+requests>=2.31.0
+# No specific version requirements for these standard libraries:
+# csv, json, random, time, datetime, typing
