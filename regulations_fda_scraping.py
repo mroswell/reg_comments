@@ -80,7 +80,7 @@ API_REQUEST_HEADERS = {
 }
 
 
-def do_sleep(duration: Union[Tuple[int], int] = (5, 10)) -> None:
+def do_sleep(duration: Union[Tuple[int], int] = (2, 7)) -> None:
     """Sleep for the input `duration. The input must be an integer or
     a two-element tuple. If the input is a two element tuple, pick a
     random number between them, and sleep for that duration.
