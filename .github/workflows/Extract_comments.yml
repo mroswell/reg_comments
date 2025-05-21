@@ -1,4 +1,4 @@
-name: FDA Regulations Comments
+name: FDA Regulations Comment Scraper1
 
 on:
   schedule:
