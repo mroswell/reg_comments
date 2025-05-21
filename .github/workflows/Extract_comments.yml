@@ -28,7 +28,7 @@ jobs:
           
       - name: Run FDA regulations scraper
         run: |
-          python extract-comments.py
+          python get-comments.py
           
       - name: Configure Git
         run: |
